@@ -1,8 +1,10 @@
 <?php
 function longestWord($sen) {
+    // Explode the string in parameter
     $explodedWords = explode(" ", $sen);
     $longestWord = "";
 
+    // Loop each word and check whether it's longer
     foreach($explodedWords as $word) {
         if (strlen($longestWord) < strlen($word)) {
             $longestWord = $word;
