@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="status">{{ gameStatus }}</div>
-    <button @click="resetGame">Reset</button>
+    <button class="reset" @click="resetGame">Reset</button>
     <template v-for="(row, index) in board">
       <div class="row" :key="index">
         <button
@@ -22,9 +22,9 @@ export default {
   data() {
     return {
       board: [
-        ["X", "", ""],
-        ["", "X", ""],
-        ["", "", "X"]
+        ["", "", ""],
+        ["", "", ""],
+        ["", "", ""]
       ],
       playingPlayer: "X",
       winningPlayer: null
@@ -46,9 +46,40 @@ export default {
         ["", "", ""],
         ["", "", ""]
       ];
-      this.playingPlayer = 'X';
+      this.playingPlayer = "X";
       this.winningPlayer = null;
     }
   }
 };
 </script>
+
+<style>
+#app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.row {
+  display: flex;
+}
+
+.status {
+  font-size: 2rem;
+  letter-spacing: 2px;
+}
+
+.square {
+  width: 50px;
+  height: 50px;
+}
+
+button {
+  padding: 10px;
+  font-size: 1rem;
+}
+
+.reset {
+  margin: 10px 0;
+}
+</style>
