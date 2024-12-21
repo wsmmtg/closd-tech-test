@@ -33,11 +33,7 @@ export default {
   },
   computed: {
     gameStatus() {
-      if (this.winningPlayer) {
-        return `${this.winningPlayer} has won the game`;
-      } else {
-        return `It's ${this.playingPlayer}'s time to play`;
-      }
+      return this.winningPlayer ? `${this.winningPlayer} has won the game` : `It's ${this.playingPlayer}'s time to play`;
     }
   },
   methods: {
@@ -47,11 +43,9 @@ export default {
         Vue.set(this.board[rowIndex], colIndex, this.playingPlayer);
 
         // check if we have a winner on this move or not
-        if (this.checkWinningConditions(rowIndex, colIndex)) {
-          this.winningPlayer = this.playingPlayer;
-        } else {
-          this.playingPlayer = this.playingPlayer === "X" ? "O" : "X";
-        }
+        this.checkWinningConditions(rowIndex, colIndex)
+        ? this.winningPlayer = this.playingPlayer
+        : this.playingPlayer = this.playingPlayer === "X" ? "O" : "X";
       }
     },
     checkWinningConditions(rowIndex, colIndex) {
@@ -65,19 +59,15 @@ export default {
         return true;
       }
 
-      // the diagonal is when row is equal to column
-      if (rowIndex === colIndex) {
-        if (this.board.every((row, index) => row[index] === this.playingPlayer)) {
-          return true;
-        }
+      // the diagonal is when row is equal to column, so this is how we conditionally check the winner for this case
+      if (rowIndex === colIndex && this.board.every((row, index) => row[index] === this.playingPlayer)) {
+        return true;
       }
 
-      // I noticed the diagonal on the other way is 0,2, or 1,1 or 2,0, all equal to 2, that's how we'll conditionally determine winner this way
-      if (rowIndex + colIndex === 2) {
-        // 2 - index because column is inverted from line
-        if (this.board.every((row, index) => row[2 - index] === this.playingPlayer)) {
-          return true;
-        }
+      // I noticed the diagonal on the other way is 0,2, or 1,1 or 2,0, all equal to 2,
+      // that's how we'll conditionally determine winner this way and 2 - index because column is inverted from line.
+      if (rowIndex + colIndex === 2 && this.board.every((row, index) => row[2 - index] === this.playingPlayer)) {
+        return true;
       }
 
       return false;
@@ -93,6 +83,7 @@ export default {
     }
   }
 };
+
 </script>
 
 <style>
