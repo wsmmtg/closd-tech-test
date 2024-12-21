@@ -65,13 +65,20 @@ export default {
         return true;
       }
 
+      // the diagonal is when row is equal to column
       if (rowIndex === colIndex) {
         if (this.board.every((row, index) => row[index] === this.playingPlayer)) {
           return true;
         }
       }
 
-      console.log(rowIndex, colIndex);
+      // I noticed the diagonal on the other way is 0,2, or 1,1 or 2,0, all equal to 2, that's how we'll conditionally determine winner this way
+      if (rowIndex + colIndex === 2) {
+        // 2 - index because column is inverted from line
+        if (this.board.every((row, index) => row[2 - index] === this.playingPlayer)) {
+          return true;
+        }
+      }
 
       return false;
     },
