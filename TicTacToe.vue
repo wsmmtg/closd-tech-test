@@ -65,6 +65,14 @@ export default {
         return true;
       }
 
+      if (rowIndex === colIndex) {
+        if (this.board.every((row, index) => row[index] === this.playingPlayer)) {
+          return true;
+        }
+      }
+
+      console.log(rowIndex, colIndex);
+
       return false;
     },
     resetGame() {
