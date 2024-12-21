@@ -2,12 +2,13 @@
   <div id="app">
     <div class="status">{{ gameStatus }}</div>
     <button class="reset" @click="resetGame">Reset</button>
-    <template v-for="(row, index) in board">
-      <div class="row" :key="index">
+    <template v-for="(row, rowIndex) in board">
+      <div class="row" :key="rowIndex">
         <button
-            v-for="(cell, cellIndex) in row"
-            :key="cellIndex"
             class="square"
+            :key="cellIndex"
+            v-for="(cell, cellIndex) in row"
+            @click="makeMove(rowIndex, cellIndex)"
         >
           {{ cell }}
         </button>
@@ -40,6 +41,32 @@ export default {
     }
   },
   methods: {
+    makeMove(rowIndex, colIndex) {
+      // if the cell hasn't been played on and we still don't have a winner we can make moves
+      if (this.board[rowIndex][colIndex] === "" && !this.winningPlayer) {
+        Vue.set(this.board[rowIndex], colIndex, this.playingPlayer);
+
+        // check if we have a winner on this move or not
+        if (this.checkWinningConditions(rowIndex, colIndex)) {
+          this.winningPlayer = this.playingPlayer;
+        } else {
+          this.playingPlayer = this.playingPlayer === "X" ? "O" : "X";
+        }
+      }
+    },
+    checkWinningConditions(rowIndex, colIndex) {
+      // check if the player wins by aligning symbols on the row
+      if (this.board[rowIndex].every((cell) => cell === this.playingPlayer)) {
+        return true;
+      }
+
+      // check if the player wins by aligning symbols on the column
+      if (this.board.every((row) => row[colIndex] === this.playingPlayer)) {
+        return true;
+      }
+
+      return false;
+    },
     resetGame() {
       this.board = [
         ["", "", ""],
